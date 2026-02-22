@@ -1,0 +1,65 @@
+.footer {
+    background: var(--dark, #1a1a2e);
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    position: relative;
+    padding: 0 2rem 2.2rem;
+}
+
+/* thin gold top rule */
+.line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(520px, 80%);
+    height: 1px;
+    background: linear-gradient(to right,
+            transparent,
+            rgba(201, 152, 42, 0.35),
+            transparent);
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    padding-top: 1.8rem;
+    font-size: 0.8rem;
+}
+
+.brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--gold-lt, #f0c060);
+    letter-spacing: 0.02em;
+}
+
+.dot {
+    color: rgba(201, 152, 42, 0.3);
+    user-select: none;
+}
+
+.copy,
+.made {
+    color: rgba(253, 246, 227, 0.3);
+    letter-spacing: 0.03em;
+}
+
+.made {
+    color: rgba(253, 246, 227, 0.22);
+}
+
+@media (max-width: 480px) {
+    .dot {
+        display: none;
+    }
+
+    .inner {
+        flex-direction: column;
+        gap: 0.3rem;
+        text-align: center;
+    }
+}

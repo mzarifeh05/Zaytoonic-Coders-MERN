@@ -1,0 +1,382 @@
+/* ─── Tokens ────────────────────────────────────────────────────── */
+.hero {
+    --olive: #4a7c3f;
+    --olive-lt: #6aad5e;
+    --gold: #c9982a;
+    --gold-lt: #f0c060;
+    --cream: #fdf6e3;
+    --dark: #1a1a2e;
+    --dark-mid: #16213e;
+
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-body: 'DM Sans', 'Segoe UI', sans-serif;
+}
+
+/* ─── Shell ─────────────────────────────────────────────────────── */
+.hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--dark);
+    font-family: var(--font-body);
+    padding: 6rem 2rem 4rem;
+}
+
+/* ─── Background sea image ──────────────────────────────────────── */
+.bgSea {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.bgSea img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+    filter: saturate(1.15) brightness(0.55);
+    transform: scale(1.04);
+    transition: transform 12s ease;
+}
+
+.hero.visible .bgSea img {
+    transform: scale(1);
+}
+
+/* ─── Gradient overlay ──────────────────────────────────────────── */
+.bgOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(160deg,
+            rgba(26, 26, 46, 0.78) 0%,
+            rgba(74, 124, 63, 0.22) 50%,
+            rgba(26, 26, 46, 0.90) 100%);
+}
+
+/* ─── Floating logo ─────────────────────────────────────────────── */
+.logoWrap {
+    position: absolute;
+    top: 2.5rem;
+    right: clamp(2rem, 6vw, 7rem);
+    z-index: 10;
+    animation: floatLogo 6s ease-in-out infinite;
+}
+
+.logo {
+    width: clamp(100px, 14vw, 180px);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 0 0 3px rgba(201, 152, 42, 0.4),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(74, 124, 63, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s 0.3s ease, transform 0.8s 0.3s ease;
+}
+
+.hero.visible .logo {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes floatLogo {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(-12px) rotate(1deg);
+    }
+}
+
+/* ─── Main content ──────────────────────────────────────────────── */
+.content {
+    position: relative;
+    z-index: 5;
+    max-width: 720px;
+    text-align: left;
+}
+
+/* eyebrow */
+.eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-lt);
+    margin: 0 0 1.2rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s 0.2s ease, transform 0.6s 0.2s ease;
+}
+
+.hero.visible .eyebrow {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* title */
+.title {
+    font-family: var(--font-display);
+    margin: 0 0 1.4rem;
+    line-height: 1.05;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+}
+
+.titleLine {
+    display: block;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700;
+    color: var(--cream);
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.7s 0.35s ease, transform 0.7s 0.35s ease;
+}
+
+.titleAccent {
+    display: block;
+    font-size: clamp(2rem, 5.5vw, 4.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-lt);
+    text-shadow: 0 0 40px rgba(201, 152, 42, 0.45);
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.7s 0.5s ease, transform 0.7s 0.5s ease;
+}
+
+.hero.visible .titleLine,
+.hero.visible .titleAccent {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* subtitle */
+.subtitle {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    color: rgba(253, 246, 227, 0.75);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 0 2.5rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s 0.65s ease, transform 0.7s 0.65s ease;
+}
+
+.hero.visible .subtitle {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ─── Action buttons ─────────────────────────────────────────────── */
+.actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s 0.8s ease, transform 0.7s 0.8s ease;
+}
+
+.hero.visible .actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.btnPrimary,
+.btnGhost {
+    display: inline-block;
+    padding: 0.78rem 1.9rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+}
+
+.btnPrimary {
+    background: linear-gradient(135deg, var(--olive), var(--olive-lt));
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(74, 124, 63, 0.45);
+}
+
+.btnPrimary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(74, 124, 63, 0.6);
+}
+
+.btnGhost {
+    background: transparent;
+    color: var(--gold-lt);
+    border: 1.5px solid rgba(201, 152, 42, 0.5);
+}
+
+.btnGhost:hover {
+    background: rgba(201, 152, 42, 0.1);
+    transform: translateY(-3px);
+    border-color: var(--gold-lt);
+}
+
+/* ─── Stats ──────────────────────────────────────────────────────── */
+.stats {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s 0.95s ease, transform 0.7s 0.95s ease;
+}
+
+.hero.visible .stats {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.statNum {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold-lt);
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(253, 246, 227, 0.5);
+}
+
+.statDivider {
+    width: 1px;
+    height: 2.5rem;
+    background: rgba(201, 152, 42, 0.3);
+}
+
+/* ─── Circuit dots ───────────────────────────────────────────────── */
+.circuitDots {
+    position: absolute;
+    bottom: 8rem;
+    right: clamp(1rem, 3vw, 4rem);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.3;
+    animation: pulse 2.4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.3s);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.4);
+    }
+}
+
+/* ─── Scroll hint ────────────────────────────────────────────────── */
+.scrollHint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fadeInScroll 1s 1.5s ease forwards;
+}
+
+.scrollLine {
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold-lt), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+.scrollText {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(253, 246, 227, 0.4);
+}
+
+@keyframes fadeInScroll {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scrollPulse {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scaleY(1.2);
+        opacity: 1;
+    }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .hero {
+        padding: 5rem 1.5rem 4rem;
+    }
+
+    .logoWrap {
+        top: 1.2rem;
+        right: 1.2rem;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .stats {
+        gap: 1.2rem;
+    }
+
+    .circuitDots {
+        display: none;
+    }
+}

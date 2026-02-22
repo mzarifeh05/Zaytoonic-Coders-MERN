@@ -1,0 +1,213 @@
+/* ─── Card shell ─────────────────────────────────────────────────── */
+.card {
+    position: relative;
+    background: linear-gradient(160deg, #0f1823 0%, #12202e 100%);
+    border: 1px solid rgba(201, 152, 42, 0.15);
+    border-radius: 1.25rem;
+    padding: 2rem 1.6rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    overflow: hidden;
+    cursor: default;
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+
+    /* entrance animation */
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card:hover {
+    border-color: rgba(201, 152, 42, 0.45);
+    box-shadow:
+        0 0 0 1px rgba(201, 152, 42, 0.15),
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(74, 124, 63, 0.12);
+    transform: translateY(-6px);
+}
+
+/* ─── Top glow accent ────────────────────────────────────────────── */
+.glowTop {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 80px;
+    background: radial-gradient(ellipse, rgba(106, 173, 94, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.card:hover .glowTop {
+    opacity: 1.5;
+}
+
+/* ─── Avatar ─────────────────────────────────────────────────────── */
+.avatarWrap {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatarFallback {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4a7c3f, #c9982a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.02em;
+}
+
+.avatarRing {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(#0f1823, #0f1823) padding-box,
+        linear-gradient(135deg, #6aad5e, #c9982a) border-box;
+    transition: inset 0.3s ease;
+}
+
+.card:hover .avatarRing {
+    inset: -5px;
+}
+
+/* ─── Info ───────────────────────────────────────────────────────── */
+.info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    flex: 1;
+}
+
+.name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fdf6e3;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.major {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f0c060;
+    background: rgba(201, 152, 42, 0.1);
+    border: 1px solid rgba(201, 152, 42, 0.25);
+    border-radius: 999px;
+    padding: 0.25rem 0.85rem;
+}
+
+.bio {
+    font-size: 0.85rem;
+    color: rgba(253, 246, 227, 0.55);
+    line-height: 1.6;
+    margin: 0.2rem 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ─── Circuit decoration ─────────────────────────────────────────── */
+.circuitLine {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+    margin-top: 0.4rem;
+}
+
+.circuitLine span {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(to right, transparent, rgba(201, 152, 42, 0.3), transparent);
+}
+
+.circuitLine span:first-child {
+    flex: 0.4;
+}
+
+.circuitLine span:last-child {
+    flex: 0.4;
+}
+
+.circuitLine::before,
+.circuitLine::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201, 152, 42, 0.4);
+    flex-shrink: 0;
+}
+
+/* ─── Social Links ───────────────────────────────────────────────── */
+.socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.2rem;
+}
+
+.socialBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: rgba(201, 152, 42, 0.6);
+    background: rgba(201, 152, 42, 0.06);
+    border: 1px solid rgba(201, 152, 42, 0.2);
+    text-decoration: none;
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.socialBtn:hover {
+    color: #f0c060;
+    background: rgba(201, 152, 42, 0.15);
+    border-color: rgba(201, 152, 42, 0.5);
+    box-shadow: 0 0 14px rgba(201, 152, 42, 0.2);
+    transform: translateY(-2px);
+}
