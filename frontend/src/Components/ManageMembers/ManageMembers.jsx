@@ -4,8 +4,9 @@ import axios from 'axios'
 import Footer from '../Footer/Footer'
 import style from './ManageMembers.module.css'
 
-const API = import.meta.env.VITE_API_URL
-const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME
+const API           = import.meta.env.VITE_API_URL
+const SECRET_KEY    = import.meta.env.VITE_SECRET_KEY
+const CLOUD_NAME    = import.meta.env.VITE_CLOUD_NAME
 const UPLOAD_PRESET = import.meta.env.VITE_UPLOAD_PRESET
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
 
@@ -14,23 +15,41 @@ const emptyForm = { name: '', major: '', bio: '', imgURL: '', linkedin: '', gith
 const ManageMembers = () => {
     const navigate = useNavigate()
 
-    const [members, setMembers] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [form, setForm] = useState(emptyForm)
+    // ── Key gate ──
+    const [unlocked, setUnlocked] = useState(false)
+    const [keyInput, setKeyInput] = useState('')
+    const [keyError, setKeyError] = useState(false)
+    const [shaking, setShaking]   = useState(false)
+
+    const handleKeySubmit = (e) => {
+        e.preventDefault()
+        if (keyInput === SECRET_KEY) {
+            setUnlocked(true)
+        } else {
+            setKeyError(true)
+            setShaking(true)
+            setTimeout(() => setShaking(false), 500)
+        }
+    }
+
+    // ── Admin state ──
+    const [members, setMembers]     = useState([])
+    const [loading, setLoading]     = useState(true)
+    const [form, setForm]           = useState(emptyForm)
     const [editingId, setEditingId] = useState(null)
     const [submitting, setSubmitting] = useState(false)
     const [deletingId, setDeletingId] = useState(null)
-    const [toast, setToast] = useState(null)
+    const [toast, setToast]         = useState(null)
     const [confirmId, setConfirmId] = useState(null)
 
     // image upload states
-    const [imgFile, setImgFile] = useState(null)
+    const [imgFile, setImgFile]       = useState(null)
     const [imgPreview, setImgPreview] = useState('')
-    const [uploading, setUploading] = useState(false)
-    const [dragOver, setDragOver] = useState(false)
+    const [uploading, setUploading]   = useState(false)
+    const [dragOver, setDragOver]     = useState(false)
     const fileInputRef = useRef(null)
 
-    /* ── fetch ── */
+    /* ── fetch (only once unlocked) ── */
     const fetchMembers = () => {
         setLoading(true)
         axios.get(API)
@@ -38,7 +57,7 @@ const ManageMembers = () => {
             .catch(() => { showToast('Failed to load members', 'error'); setLoading(false) })
     }
 
-    useEffect(() => { fetchMembers() }, [])
+    useEffect(() => { if (unlocked) fetchMembers() }, [unlocked])
 
     /* ── toast ── */
     const showToast = (msg, type = 'success') => {
@@ -132,12 +151,12 @@ const ManageMembers = () => {
     const handleEdit = member => {
         setEditingId(member._id)
         setForm({
-            name: member.name || '',
-            major: member.major || '',
-            bio: member.bio || '',
-            imgURL: member.imgURL || '',
+            name:     member.name     || '',
+            major:    member.major    || '',
+            bio:      member.bio      || '',
+            imgURL:   member.imgURL   || '',
             linkedin: member.linkedin || '',
-            github: member.github || '',
+            github:   member.github   || '',
         })
         setImgFile(null)
         setImgPreview(member.imgURL || '')
@@ -170,6 +189,10 @@ const ManageMembers = () => {
     const initials = name =>
         name ? name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : '??'
 
+    /* ══════════════════════════════════════════
+       ADMIN UI — always rendered as background
+       Key gate overlays it when locked
+    ══════════════════════════════════════════ */
     return (
         <div className={style.page}>
             <div className={style.glowA} />
@@ -416,6 +439,41 @@ const ManageMembers = () => {
                 <div className={`${style.toast} ${style[`toast_${toast.type}`]}`}>
                     <span className={style.toastIcon}>{toast.type === 'error' ? '✕' : '✓'}</span>
                     {toast.msg}
+                </div>
+            )}
+
+            {/* ── Key Gate Overlay ── */}
+            {!unlocked && (
+                <div className={style.backdrop}>
+                    <div className={`${style.popup} ${shaking ? style.shake : ''}`}>
+                        <div className={style.popupIconWrap}>
+                            <span className={style.popupIcon}>🔑</span>
+                        </div>
+
+                        <h2 className={style.popupTitle}>Admin Access</h2>
+                        <p className={style.popupSub}>Enter the secret key to manage members</p>
+
+                        <form onSubmit={handleKeySubmit} className={style.popupForm} noValidate>
+                            <div className={style.popupFieldWrap}>
+                                <input
+                                    type="password"
+                                    placeholder="Enter secret key…"
+                                    value={keyInput}
+                                    onChange={(e) => { setKeyInput(e.target.value); setKeyError(false) }}
+                                    className={`${style.popupInput} ${keyError ? style.popupInputError : ''}`}
+                                    autoFocus
+                                />
+                                {keyError && (
+                                    <p className={style.popupError}>✕ Incorrect key. Access denied.</p>
+                                )}
+                            </div>
+                            <button type="submit" className={style.popupSubmit}>
+                                Unlock →
+                            </button>
+                        </form>
+
+                        <button className={style.popupClose} onClick={() => navigate('/')}>✕</button>
+                    </div>
                 </div>
             )}
         </div>
